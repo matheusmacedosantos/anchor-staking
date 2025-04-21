@@ -1,6 +1,8 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, Token};
 
+use crate::state::UserAccount;
+
 #[derive(Accounts)]
 pub struct InitializeUser<'info> {
     #[account(

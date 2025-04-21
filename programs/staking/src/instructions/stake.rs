@@ -9,7 +9,7 @@ use anchor_spl::{
     token::{approve, Approve, Mint, Token, TokenAccount},
 };
 
-use crate::state::StakeAccount;
+use crate::state::{StakeAccount, StakeConfig, UserAccount};
 
 #[derive(Accounts)]
 pub struct Stake<'info> {
@@ -85,7 +85,7 @@ impl<'info> Stake<'info> {
         approve(cpi_ctx, 1)?;
 
         let delegate = self.stake_account.to_account_info();
-        let token_accountx = self.mint_ata.to_account_info();
+        let token_account = self.mint_ata.to_account_info();
         let edition = self.master_edition.to_account_info();
         let mint = self.mint.to_account_info();
         let token_program = self.token_program.to_account_info();
@@ -109,7 +109,7 @@ impl<'info> Stake<'info> {
                 token_program: &token_program,
             },
         )
-        .invoke_signed(signers_seeds);
+        .invoke_signed(signer_seeds);
 
         self.stake_account.set_inner(StakeAccount {
             owner: self.user.key(),
